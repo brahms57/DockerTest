@@ -22,4 +22,13 @@ jobs:
     - name: Run tests inside Docker image
       run: docker run --rm myapp-ci:${{ github.sha }} pytest
 
+  # login sur le registre privé
+    - name: Login Docker registry
+      run: echo $DOCKER_PASSWORD | docker login https://github.com/brahms57/DockerTest.git/v2/ -u $DOCKER_USERNAME --password-stdin
+      continue-on-error: true
+
+ # Envoi de l’image sur le registre privé
+    - name: Push Image on Registry
+      run: docker push $DOCKER_REGISTRY_URL/myapp-ci:stable
+
 
